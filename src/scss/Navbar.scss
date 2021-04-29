@@ -16,6 +16,17 @@
     margin: 0 0 0 40px;
 }
 
+.Categories h2 {
+    margin: 0 10px;
+    font-size: 16px;
+}
+
+.Categories h2:hover {
+    cursor: pointer;
+    color: $mainColor;
+
+}
+
 .CartAndAccount {
     display: flex;
     align-items: center;
@@ -26,3 +37,4 @@
     margin: 5px;
     cursor: pointer;
 }
+
