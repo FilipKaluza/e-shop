@@ -1,8 +1,10 @@
-import {useEffect, useState} from "react";
-import axios from "axios";
+import {useEffect} from "react";
 
 import {useSelector, useDispatch} from "react-redux";
+import {useParams} from "react-router-dom";
 import * as actions from "../store/actions/actions";
+
+import { Link } from "react-router-dom";
 
 import { Spin, Space } from 'antd';
 import { Card } from 'antd';
@@ -10,62 +12,56 @@ import Row from "antd/lib/row";
 import Col from "antd/lib/col";
 
 
+
 const { Meta } = Card;
 
 
 const Products = () => {
 
-    const productsState = useSelector(state => state)
-    const [ displayedProdcuts, setDisplayedProducts ] = useState(1) // 1x8, if user click show more it will be 2x8
-    console.log(productsState)
+    const productsState = useSelector(state => state);
+    const params = useParams();
 
     const dispatch = useDispatch();
 
 
     useEffect(() => {
-        const query = 8 * displayedProdcuts;
-        dispatch(actions.loadProducts(`products`))
-        
-    }, [dispatch])
+        let query = "/products"
+        if(params.category === "all") {
+            query = "/products/"
+        } else {
+            query = "/products/category/" + params.category
+        }
+        dispatch(actions.loadProductsStart())
+        dispatch(actions.loadProducts(query))
+    }, [dispatch, params.category])
 
     let productCards = <Space size="middle"> <Spin size="large" /> </Space>
 
-    if(productsState.products) { 
+    if(!productsState.loading) { 
         productCards = productsState.products.map((product) => {
-        if(productsState.category === "all") {
-            return (
-                <Col className="Item" key={product.id} xs={24} sm={11} xl={5} >
-                    <Card
-                    hoverable
-                    cover={<img alt="example" src={product.image} />}
-                >
-                    <Meta title={product.title} />
-                    <Row className="CartPriceAndCartBtn" justify="space-between">
-                        <p> Price: {product.price}€ </p>
-                        <button className="AddToCartButton" > Pridať do košíka </button>
-                    </Row>
-                    </Card>
-                </Col>
-                
+            const path = "/show-product/" + product.id
+            return(
+                    <Col key={product.id} className="Item" xs={24} sm={11} xl={5}  > 
+                        <Link to={path}  >
+                            <Card
+                            onClick={() => dispatch(actions.showProduct(product))}
+                            hoverable
+                            cover={<img alt="example" src={product.image} />}
+                        >
+                            <Meta title={product.title} />
+                        
+                            <Row className="CartPriceAndCartBtn" justify="space-between">
+                                <p> Price: {product.price}€ </p> 
+                                <button onClick="#" className="AddToCartButton" > Pridať do košíka </button>
+                            </Row>
+                            </Card>
+                        </Link>
+                    </Col> 
             );
-        } else if (product.category === productsState.category) {
-            return (
-                <Col className="Item" key={product.id} xs={24} sm={11} xl={5} >
-                    <Card
-                    hoverable
-                    cover={<img alt="example" src={product.image} />}
-                >
-                    <Meta title={product.title} />
-                    <Row className="CartPriceAndCartBtn" justify="space-between">
-                        <p> Price: {product.price}€ </p>
-                        <button className="AddToCartButton" > Pridať do košíka </button>
-                    </Row>
-                    </Card>
-                </Col>
-                
-            );
-        }
-    })};
+        });
+    };
+    
+    
 
 
     return(

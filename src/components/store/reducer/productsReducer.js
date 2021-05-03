@@ -5,7 +5,8 @@ const initialState = {
     products: null,
     category: "all",
     cart: null,
-    loading: false,
+    loading: true,
+    showProduct: null
 }
 
 const productReducer = (state = initialState, action) => {
@@ -13,23 +14,31 @@ const productReducer = (state = initialState, action) => {
         case actionTypes.LOAD_PRODUCTS_START:
             return {
                 ...state,
+                products: [],
                 loading: true
             }
         case actionTypes.LOAD_PRODUCTS_SUCCESS:
             return {
                 ...state,
                 products: action.products,
-                category: action.category
+                category: action.category,
+                loading: false
             }
         case actionTypes.LOAD_PRODUCTS_FAILED:
             return {
                 ...state,
-                error: action.error
+                error: action.error,
+                loading: false
             }
         case actionTypes.FILTER_PRODUCTS:
             return {
                 ...state,
                 category: action.category
+            }
+        case actionTypes.SHOW_PRODUCT:
+            return {
+                ...state,
+                showProduct: action.product
             }
         case actionTypes.ADD_PRODUCTS_TO_CART:
             return {

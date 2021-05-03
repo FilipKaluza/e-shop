@@ -29,10 +29,17 @@ export const filterProducts = (category) => {
     };
 };
 
-
-const loadProductStart = () => {
+export const showProduct = (product) => {
     return {
-        type: "LOAD_PRODUCT_START",
+        type: actionTypes.SHOW_PRODUCT,
+        product: product
+    };
+};
+
+
+export const loadProductsStart = () => {
+    return {
+        type: "LOAD_PRODUCTS_START",
     };
 };
 
@@ -52,10 +59,9 @@ const loadProductsFailed = (error) => {
 };
 
 export const loadProducts = (query) => {
-    loadProductStart()
     return async (dispatch) => {
         try {
-            const products = await axios.get(`https://fakestoreapi.com/${query}`)
+            const products = await axios.get(`https://fakestoreapi.com${query}`)
             dispatch(loadProductsSuccess(products.data))
         }
         catch(error) {

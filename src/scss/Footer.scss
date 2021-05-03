@@ -1,0 +1,21 @@
+@import "./variables.scss";
+
+.Footer {
+    background-color: $mainColor;
+    margin-top: 20px;
+    height: 300px;
+}
+
+.SocSitesFooter {
+    color: #fff;
+    font-size: 40px;
+}
+
+.SocSitesFooter span {
+    margin: 20px 10px;
+}
+
+.SocSitesFooter span:hover {
+    cursor: pointer;
+    color: #000;
+}
