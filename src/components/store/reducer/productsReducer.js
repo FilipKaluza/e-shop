@@ -4,7 +4,6 @@ const initialState = {
 
     products: null,
     category: "all",
-    cart: null,
     loading: true,
     showProduct: null
 }
@@ -39,21 +38,6 @@ const productReducer = (state = initialState, action) => {
             return {
                 ...state,
                 showProduct: action.product
-            }
-        case actionTypes.ADD_PRODUCTS_TO_CART:
-            return {
-                ...state,
-                cart: action.productsInCart
-            }
-        case actionTypes.REMOVE_PRODUCTS_FROM_CART:
-            return {
-                ...state,
-                cart: action.productsInCart
-            }
-        case actionTypes.CLEAR_CART:
-            return {
-                ...state,
-                cart: null
             }
         default:
             return state

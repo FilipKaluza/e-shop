@@ -11,14 +11,13 @@ import { Card } from 'antd';
 import Row from "antd/lib/row";
 import Col from "antd/lib/col";
 
-
-
 const { Meta } = Card;
 
 
 const Products = () => {
 
-    const productsState = useSelector(state => state);
+    const productsState = useSelector(state => state.productsReducer);
+    const cartState = useSelector(state => state.cartReducer);
     const params = useParams();
 
     const dispatch = useDispatch();
@@ -34,6 +33,22 @@ const Products = () => {
         dispatch(actions.loadProductsStart())
         dispatch(actions.loadProducts(query))
     }, [dispatch, params.category])
+
+    const addToCart = (e,product) => {
+        e.preventDefault()
+        if(cartState.cart.length === 0) {
+            dispatch({type: "ADD", payload: product}) 
+        } else {
+            cartState.cart.map((item) => {
+                if(item.id !== product.id ) {
+                    return dispatch({type: "ADD", payload: product })
+                } else {
+                    return dispatch({type: "INCREASE" , payload: product.id})
+                }
+            })
+        }
+        
+    }
 
     let productCards = <Space size="middle"> <Spin size="large" /> </Space>
 
@@ -52,7 +67,7 @@ const Products = () => {
                         
                             <Row className="CartPriceAndCartBtn" justify="space-between">
                                 <p> Price: {product.price}€ </p> 
-                                <button onClick="#" className="AddToCartButton" > Pridať do košíka </button>
+                                <button onClick={(e) => addToCart(e,product)} className="AddToCartButton" > Pridať do košíka </button>
                             </Row>
                             </Card>
                         </Link>

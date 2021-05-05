@@ -6,14 +6,28 @@ import reportWebVitals from './reportWebVitals';
 
 import { BrowserRouter}  from "react-router-dom";
 
-import {createStore, applyMiddleware, compose} from "redux";
+import {createStore, applyMiddleware, compose, combineReducers} from "redux";
 import { Provider } from "react-redux";
 import thunk from "redux-thunk";
-import reducer from "./components/store/reducer/productsReducer";
+import productsReducer from "./components/store/reducer/productsReducer";
+import cartReducer from "./components/store/reducer/cartReduxer";
+
+import {loadState, saveState} from "./components/store/localStorage/localStorage";
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
-const store = createStore(reducer, composeEnhancers(applyMiddleware(thunk)));
+const rootReducer = combineReducers({
+  productsReducer: productsReducer,
+  cartReducer: cartReducer
+});
+
+const persistedState = loadState();
+
+const store = createStore(rootReducer, persistedState, composeEnhancers(applyMiddleware(thunk)));
+
+store.subscribe(() => {
+  saveState(store.getState())
+})
 
 ReactDOM.render(
   <React.StrictMode>

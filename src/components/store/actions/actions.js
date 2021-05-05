@@ -1,27 +1,6 @@
 import axios from "axios";
 import * as actionTypes from "./actionTypes";
 
-export const addProductsToCart = (productsInCart) => {
-    return {
-        type: actionTypes.ADD_PRODUCTS_TO_CART,
-        productsInCart: productsInCart
-    };
-};
-
-
-export const removeItem = (productsInCart) => {
-    return {
-        type: actionTypes.ADD_PRODUCTS_TO_CART,
-        productsInCart: productsInCart
-    };
-};
-
-export const clearCart = () => {
-    return {
-        type: actionTypes.REMOVE_PRODUCTS_FROM_CART
-    };
-};
-
 export const filterProducts = (category) => {
     return {
         type: actionTypes.FILTER_PRODUCTS,
@@ -62,13 +41,16 @@ export const loadProducts = (query) => {
     return async (dispatch) => {
         try {
             const products = await axios.get(`https://fakestoreapi.com${query}`)
-            dispatch(loadProductsSuccess(products.data))
+            let updatedProducts = []
+            products.data.map((item => {
+                return updatedProducts.push({...item, amount: 1})
+            }))
+            dispatch(loadProductsSuccess(updatedProducts))
         }
         catch(error) {
             dispatch(loadProductsFailed("Nepodarilo sa načítať produkty"))
         }
     }
 }
-
 
 

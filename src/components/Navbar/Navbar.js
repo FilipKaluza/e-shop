@@ -1,10 +1,13 @@
 import Row from "antd/lib/row";
-import { UserOutlined  } from '@ant-design/icons';
+import Col from "antd/lib/col";
+
+import { UserOutlined, ShoppingCartOutlined  } from '@ant-design/icons';
 
 import Categories from "./Categories/Categories";
-import Cart from "./Cart/Cart";
 
 const Navbar = () => {
+
+    
 
     return(
         <Row className="Navbar">
@@ -12,7 +15,10 @@ const Navbar = () => {
             <Categories />
             <div className="CartAndAccount">
                 <UserOutlined  />
-                <Cart />
+                <Col className="CartWrapper">
+                    <span className="AmountOfItems"> 2 </span>
+                    <ShoppingCartOutlined className="Cart" ></ShoppingCartOutlined>
+                </Col>
             </div>
         </Row>
     );
