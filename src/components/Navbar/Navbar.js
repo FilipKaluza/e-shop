@@ -1,7 +1,8 @@
 import Row from "antd/lib/row";
-import { ShoppingCartOutlined, UserOutlined  } from '@ant-design/icons';
+import { UserOutlined  } from '@ant-design/icons';
 
 import Categories from "./Categories/Categories";
+import Cart from "./Cart/Cart";
 
 const Navbar = () => {
 
@@ -10,8 +11,8 @@ const Navbar = () => {
             <h1 className="Logo"> Logo </h1>
             <Categories />
             <div className="CartAndAccount">
-                <UserOutlined />
-                <ShoppingCartOutlined />
+                <UserOutlined  />
+                <Cart />
             </div>
         </Row>
     );
